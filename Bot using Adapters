@@ -1,0 +1,89 @@
+#---------------------------
+
+from chatterbot import ChatBot
+
+#Create Chatbot Instance
+bot = ChatBot("buddy")
+
+#You can position the storage adapter with the chatbot object. 
+# Storage Adapters allows you to connect to a particular storage unit or network. 
+# For using a storage adapter, we need to specify it. 
+# We will position the storage adapter by assigning it to the import path of the storage we want to use. 
+# Here we are using SQL Storage Adapter, which permits chatbot to connect to databases in SQL. 
+# By using the database parameter, 
+# we will create a new SQLite Database. Please follow the code below, for creating a new database for chatbot.
+
+
+# Create object of ChatBot class with Storage Adapter
+bot = ChatBot(
+    'Buddy',
+    storage_adapter='chatterbot.storage.SQLStorageAdapter',
+    database_uri='sqlite:///database.sqlite3'
+)
+
+# Create object of ChatBot class with Logic Adapter
+bot = ChatBot(
+    'Buddy',  
+    logic_adapters=[
+        'chatterbot.logic.BestMatch',
+        'chatterbot.logic.TimeLogicAdapter'],
+)
+
+#Training the chatbot
+ #let's import the ListTrainer, 
+ #create its object by passing the Chatbot object, 
+ # and call the train() method by passing a list of sentences.
+
+ # Inport ListTrainer
+from chatterbot.trainers import ListTrainer
+trainer = ListTrainer(bot)
+trainer.train([
+'Hi',
+'Hello',
+'Hello',
+"Hi",
+"How are you",
+"I am good, what about you",
+"tell me who is the strongest male avenger",
+"Very Obvious,its Hulk",
+"and female",
+"Captain Marvel",
+"do you like marvel",
+"yes,like you, i love marvel",
+"have you heard about friends reunion",
+"indeed,the shooting for same has started earlier this week",
+"yes i am very excited",
+"yes,me too",
+'I need your assistance regarding my order',
+'Please, Provide me with your order id',
+'I have a complaint.',
+'Please elaborate, your concern',
+'How long it will take to receive an order ?',
+'An order takes 3-5 Business days to get delivered.',
+'Okay Thanks',
+'No Problem! Have a Good Day!'
+])
+
+#Chatbot Testing
+#The last step of this tutorial is to test the chatterbot’s conversational skills. 
+#For testing its responses, we will call the get_responses() method of Chatbot instance.
+
+# Get a response to the input text 'I would like to book a flight.'
+response = bot.get_response('I have a complaint.')
+print("Bot Response:", response)
+
+#We will create a while loop for our chatbot to run in. 
+# When statements are passed in the loop, we will get an appropriate response for it,
+#  as we have already entered data into our database.
+#  If we get "Bye" or "bye" statement from the user, we can put an end to the loop and stop the program.
+
+name=input("Enter Your Name: ")
+print("Welcome to the Bot Service! Let me know how can I help you?")
+while True:
+    request=input(name+':')
+    if request=='Bye' or request =='bye':
+        print('Bot: Bye')
+        break
+    else:
+        response=bot.get_response(request)
+        print('Bot:',response)
