@@ -1,0 +1,10 @@
+hi
+hello
+how are you?
+i am fantastic.
+what are you?
+i am a chatbot for your queries.
+what is your name
+BOT
+thanks
+welcome
